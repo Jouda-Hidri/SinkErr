@@ -1,0 +1,41 @@
+# (1) ack manual
+# (2) connect to kafka from outside docker
+server: 
+  port: 9001
+spring:  
+  kafka: 
+    #listener:
+      #ack-mode: manual (1)
+    consumer:
+       enable-auto-commit: true #false (1)
+       bootstrap-servers: kafka:9092 #localhost:9092 (2)
+       group-id: group_id
+       auto-offset-reset: latest
+    producer:
+        bootstrap-servers: kafka:9092 #localhost:9092 (2)
+        value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    template:
+      default-topic: greetings
+#  datasource:
+#    url: jdbc:postgresql://dbpostgresql:5432/polldb
+#    driver-class-name: org.postgresql.Driver
+#    username: postgres
+#    password: password
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        ddl-auto: none
+  h2:
+    console:
+      enabled: true
+      path: /h2
+      settings:
+        web-allow-others: true
+  datasource:
+    url: jdbc:h2:file:~/sinkerdb
+    username: sa
+    password: 
+    driver-class-name: org.h2.Driver
+  flyway:
+    baselineOnMigrate: true
